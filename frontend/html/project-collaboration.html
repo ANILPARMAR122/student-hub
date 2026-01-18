@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub | Project Collaboration</title>
+    <script>
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) window.location.href = 'login.html';
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { purple: '#8B5CF6', dark: '#7C3AED', bg: '#F8F9FB', black: '#111827' } } } } }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans h-screen flex overflow-hidden">
+    
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 shadow-sm shrink-0 items-center">
+        <div onclick="window.location.href='index.html'" class="mb-8 cursor-pointer text-gray-400 hover:text-brand-purple transition"><i class="fa-solid fa-arrow-left text-2xl"></i></div>
+        <div class="flex flex-col gap-6 w-full px-4">
+            <div onclick="window.location.href='internship.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-briefcase text-lg"></i></div>
+            <div onclick="window.location.href='marketplace.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-store text-lg"></i></div>
+            
+            <div onclick="window.location.href='project-collaboration.html'" class="h-12 flex items-center justify-center bg-brand-purple text-white shadow-lg rounded-xl cursor-pointer transition transform hover:scale-105"><i class="fa-solid fa-laptop-code text-lg"></i></div>
+            
+            <div onclick="window.location.href='event.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-regular fa-calendar-check text-lg"></i></div>
+            <div onclick="window.location.href='recycling.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-recycle text-lg"></i></div>
+            <div onclick="window.location.href='subscription-splitter.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-wallet text-lg"></i></div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="px-8 py-6 bg-brand-bg shrink-0 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Find Your <span class="text-brand-purple">Dream Team</span></h1>
+                <p class="text-sm text-gray-500">Collaborate on projects, hackathons, and startups.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="window.location.href='my-teams.html'" class="bg-white text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold shadow-sm border border-gray-200 hover:bg-gray-50 transition">
+                    <i class="fa-solid fa-users-viewfinder"></i> My Teams
+                </button>
+                <button onclick="openProjectModal()" class="bg-brand-black text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:bg-brand-purple transition flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Post Idea
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-8 pb-8">
+            <div class="flex gap-4 mb-8 sticky top-0 bg-brand-bg z-40 py-2">
+                <div class="flex-1 bg-white rounded-2xl px-5 border border-gray-200 flex items-center shadow-sm">
+                    <i class="fa-solid fa-search text-gray-400 mr-3"></i>
+                    <input type="text" id="projectSearch" placeholder="Search projects..." class="w-full py-3.5 outline-none text-sm">
+                </div>
+                <select id="stackFilter" class="bg-white border border-gray-200 rounded-2xl px-5 py-3.5 text-sm font-bold text-gray-600 outline-none cursor-pointer">
+                    <option value="All">All Tech Stacks</option>
+                    <option value="React">React / Next.js</option>
+                    <option value="Python">Python / AI</option>
+                    <option value="Flutter">Flutter / Mobile</option>
+                    <option value="Node">Node.js / Backend</option>
+                </select>
+            </div>
+
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+                <div class="col-span-full text-center py-10 text-gray-400">Loading projects...</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="projectModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden relative">
+            <div class="bg-brand-purple p-6 text-white flex justify-between items-center">
+                <h3 class="text-lg font-bold">Post a Project Idea</h3>
+                <button onclick="closeProjectModal()" class="hover:text-black transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form onsubmit="handlePostProject(event)" class="p-8 space-y-4">
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Project Title</label><input type="text" name="title" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tech Stack</label><input type="text" name="tech_stack" placeholder="e.g. React, Node, MySQL" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Team Size Needed</label><input type="number" name="team_size" min="2" max="10" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none"></div>
+                <div><label class="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label><textarea name="description" rows="3" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none"></textarea></div>
+                <button type="submit" class="w-full bg-brand-black text-white py-3 rounded-xl font-bold shadow-lg hover:bg-brand-purple transition">🚀 Launch Project</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="joinModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[130] hidden items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100 relative">
+            <button onclick="closeJoinModal()" class="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div id="joinFormContent" class="transition-all duration-500 ease-in-out">
+                <div class="bg-gray-900 p-6 text-white">
+                    <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-paper-plane text-brand-purple"></i> Request to Join</h3>
+                    <p class="text-gray-400 text-xs mt-1">Pitch yourself to the team leader.</p>
+                </div>
+                <div class="p-6">
+                    <form onsubmit="submitJoinRequest(event)">
+                        <input type="hidden" id="joinProjectId">
+                        <div class="mb-4">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Your Class / Year</label>
+                            <div class="relative"><i class="fa-solid fa-graduation-cap absolute left-4 top-3.5 text-gray-400"></i><input type="text" id="joinClassInfo" required placeholder="e.g. TY BCA, Div A" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:border-brand-purple focus:ring-2 focus:ring-purple-50 transition"></div>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Short Message</label>
+                            <div class="relative"><i class="fa-solid fa-comment-dots absolute left-4 top-3.5 text-gray-400"></i><textarea id="joinMessage" rows="3" placeholder="I have skills in React and can help with..." class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm outline-none focus:border-brand-purple focus:ring-2 focus:ring-purple-50 transition"></textarea></div>
+                        </div>
+                        <button type="submit" id="joinSubmitBtn" class="w-full bg-brand-black text-white py-3.5 rounded-xl font-bold shadow-lg hover:bg-brand-purple hover:shadow-purple-200 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group"><span>Send Request</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="joinSuccessContent" class="hidden flex-col items-center justify-center py-12 px-6 text-center animate-fadeIn">
+                <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 border-4 border-green-100 rounded-full animate-ping opacity-75"></div>
+                    <i class="fa-solid fa-check text-5xl text-green-500 drop-shadow-sm scale-0 animate-[bounce_0.5s_ease-out_forwards]"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Request Sent! 🚀</h3>
+                <p class="text-gray-500 text-sm max-w-[200px] mx-auto leading-relaxed">The team leader has been notified.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/store.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

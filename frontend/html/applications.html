@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub | My Applications</title>
+    <script>
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) window.location.href = 'login.html';
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { orange: '#FF5A36', blue: '#2563EB', bg: '#F8F9FB', black: '#111827' } } } } }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans antialiased h-screen flex overflow-hidden">
+    
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 shadow-sm shrink-0 items-center">
+        <div onclick="window.location.href='index.html'" class="mb-8 flex justify-center cursor-pointer text-gray-400 hover:text-brand-orange transition"><i class="fa-solid fa-arrow-left text-2xl"></i></div>
+        <div class="flex flex-col gap-6 w-full px-4">
+            <div onclick="window.location.href='internship.html'" class="h-12 flex items-center justify-center bg-white text-gray-400 hover:text-brand-orange hover:bg-orange-50 border border-transparent rounded-xl cursor-pointer transition" title="Jobs">
+                <i class="fa-solid fa-briefcase text-lg"></i>
+            </div>
+            <div onclick="window.location.href='applications.html'" class="h-12 flex items-center justify-center bg-brand-blue text-white shadow-lg rounded-xl cursor-pointer transition" title="My Applications">
+                <i class="fa-solid fa-file-signature text-lg"></i>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative h-screen overflow-hidden">
+        <header class="px-8 py-6 bg-brand-bg shrink-0">
+            <h1 class="text-2xl font-bold text-gray-800">My <span class="text-brand-blue">Applications</span></h1>
+            <p class="text-sm text-gray-500">Track and manage your job submissions.</p>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-8 pb-8">
+            <div id="myApplicationsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+        </div>
+    </main>
+
+    <script src="../js/store.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

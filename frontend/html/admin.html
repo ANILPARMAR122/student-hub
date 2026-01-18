@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Student Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-black': '#111827',
+                        'brand-blue': '#2563EB',
+                        'brand-dark': '#0F172A',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-brand-dark text-white flex flex-col shrink-0 transition-all duration-300">
+        <div class="h-16 flex items-center px-6 border-b border-gray-700">
+            <div class="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center font-bold text-white mr-3">S</div>
+            <span class="font-bold text-lg tracking-tight">StudentHub Admin</span>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+            <a href="#overview" class="nav-link flex items-center gap-3 px-4 py-3 bg-brand-blue text-white rounded-xl transition-colors">
+                <i class="fa-solid fa-chart-line w-5"></i> <span class="font-medium">Dashboard Overview</span>
+            </a>
+            <a href="#activity" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-users w-5"></i> <span class="font-medium">Student Activity</span>
+            </a>
+            <a href="#market" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-store w-5"></i> <span class="font-medium">Marketplace Report</span>
+            </a>
+            <a href="#jobs" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-briefcase w-5"></i> <span class="font-medium">Internships & Jobs</span>
+            </a>
+            <a href="#safety" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-shield-halved w-5"></i> <span class="font-medium">Chat & Safety</span>
+            </a>
+            <a href="#projects" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-diagram-project w-5"></i> <span class="font-medium">Collaboration</span>
+            </a>
+            <a href="#sustainability" class="nav-link flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 rounded-xl transition-colors">
+                <i class="fa-solid fa-leaf w-5"></i> <span class="font-medium">Sustainability</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-700">
+            <button onclick="handleAdminLogout()" class="flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-900/20 rounded-xl w-full transition-colors">
+                <i class="fa-solid fa-right-from-bracket w-5"></i> <span class="font-medium">Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-8">
+        
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">College Monitoring Dashboard</h1>
+                <p class="text-gray-500 text-sm">Welcome back, Admin. Here's what's happening on campus today.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full border border-yellow-200">
+                    <i class="fa-solid fa-lock mr-1"></i> ADMIN ACCESS
+                </span>
+                <div class="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 overflow-hidden">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=111827&color=fff" alt="Admin">
+                </div>
+            </div>
+        </header>
+
+        <section id="overview" class="report-section space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Total Students</p>
+                            <h3 class="text-3xl font-bold text-gray-900 mt-1" id="cardTotalStudents">0</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-green-600 font-bold"><i class="fa-solid fa-arrow-up"></i> 12% vs last month</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Active Today</p>
+                            <h3 class="text-3xl font-bold text-gray-900 mt-1" id="cardActiveToday">0</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400">Real-time usage</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Market Items</p>
+                            <h3 class="text-3xl font-bold text-gray-900 mt-1" id="cardMarketItems">0</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400">Listed by students</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Reports / Issues</p>
+                            <h3 class="text-3xl font-bold text-gray-900 mt-1" id="cardIssues">0</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                    </div>
+                    <p class="text-xs text-red-500 font-bold">Requires Attention</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-6">Student Activity by Class</h4>
+                    <canvas id="chartActivity"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-6">Marketplace Categories</h4>
+                    <div class="h-64 flex justify-center">
+                        <canvas id="chartMarket"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="activity" class="report-section hidden space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b pb-4">📊 Student Activity Report</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3">Class</th>
+                            <th class="px-6 py-3">Total Students</th>
+                            <th class="px-6 py-3">Active Today</th>
+                            <th class="px-6 py-3">Engagement Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b">
+                            <td class="px-6 py-4 font-medium text-gray-900">BCA - FY</td>
+                            <td class="px-6 py-4">120</td>
+                            <td class="px-6 py-4 text-green-600 font-bold">85</td>
+                            <td class="px-6 py-4"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full" style="width: 70%"></div></div></td>
+                        </tr>
+                        <tr class="bg-white border-b">
+                            <td class="px-6 py-4 font-medium text-gray-900">BCA - SY</td>
+                            <td class="px-6 py-4">115</td>
+                            <td class="px-6 py-4 text-green-600 font-bold">92</td>
+                            <td class="px-6 py-4"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full" style="width: 80%"></div></div></td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="px-6 py-4 font-medium text-gray-900">BCA - TY</td>
+                            <td class="px-6 py-4">110</td>
+                            <td class="px-6 py-4 text-green-600 font-bold">105</td>
+                            <td class="px-6 py-4"><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-600 h-2.5 rounded-full" style="width: 95%"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="safety" class="report-section hidden space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b pb-4">💬 Chat & Safety Report</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-red-50 p-6 rounded-xl border border-red-100">
+                    <h3 class="text-red-800 font-bold text-lg mb-1">Reported Messages</h3>
+                    <p class="text-3xl font-bold text-red-600">12</p>
+                    <p class="text-xs text-red-400 mt-2">Requires immediate review</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                    <h3 class="text-gray-800 font-bold text-lg mb-1">Anonymous Chats</h3>
+                    <p class="text-3xl font-bold text-gray-600">1,240</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                    <h3 class="text-gray-800 font-bold text-lg mb-1">Blocked Users</h3>
+                    <p class="text-3xl font-bold text-gray-600">3</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h4 class="font-bold text-gray-800 mb-4">Recent Flags</h4>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center p-3 bg-red-50 rounded-lg text-sm text-red-700">
+                        <span><i class="fa-solid fa-flag mr-2"></i> Inappropriate language detected in Group "SY Discussion"</span>
+                        <button class="bg-white px-3 py-1 rounded border border-red-200 text-xs font-bold hover:bg-red-100">Review</button>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-red-50 rounded-lg text-sm text-red-700">
+                        <span><i class="fa-solid fa-flag mr-2"></i> User report: "Spamming marketplace listings"</span>
+                        <button class="bg-white px-3 py-1 rounded border border-red-200 text-xs font-bold hover:bg-red-100">Review</button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="projects" class="report-section hidden space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b pb-4">🧩 Project Collaboration Report</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-6">Popular Technologies</h4>
+                    <div class="h-64 flex justify-center">
+                        <canvas id="chartTech"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-4">Project Stats</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-600">Total Projects Created</span>
+                            <span class="font-bold text-gray-900" id="cardProjects">0</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-600">Avg. Team Size</span>
+                            <span class="font-bold text-brand-blue">3.4 Students</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-gray-600">Inter-department Teams</span>
+                            <span class="font-bold text-green-600">14%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sustainability" class="report-section hidden space-y-6">
+            <h2 class="text-xl font-bold text-gray-800 border-b pb-4">♻️ Sustainability Impact Report</h2>
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-100 text-center">
+                <i class="fa-solid fa-leaf text-5xl text-green-500 mb-4"></i>
+                <h3 class="text-2xl font-bold text-green-900">Total Campus Impact</h3>
+                <div class="grid grid-cols-3 gap-8 mt-8">
+                    <div>
+                        <div class="text-4xl font-bold text-green-700" id="cardDonations">0</div>
+                        <div class="text-sm font-bold text-green-600 uppercase mt-1">Items Reused</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-green-700">45 kg</div>
+                        <div class="text-sm font-bold text-green-600 uppercase mt-1">E-Waste Diverted</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-green-700">₹ 1.2L</div>
+                        <div class="text-sm font-bold text-green-600 uppercase mt-1">Money Saved</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="market" class="report-section hidden"><div class="p-10 text-center text-gray-500">Full Marketplace Table Logic Loaded via JS</div></section>
+        <section id="jobs" class="report-section hidden"><div class="p-10 text-center text-gray-500">Full Internship Table Logic Loaded via JS</div></section>
+
+    </main>
+
+    <script src="js/store.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

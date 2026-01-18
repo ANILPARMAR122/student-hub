@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub | Login</title>
+    <script>
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (state && state.user) window.location.href = 'index.html';
+        })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { blue: '#2563EB', orange: '#FF5A36', dark: '#111827' } } } } }
+    </script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-3xl shadow-xl w-full max-w-4xl h-[600px] flex overflow-hidden">
+        <div class="hidden md:flex w-1/2 bg-brand-dark text-white flex-col justify-between p-12">
+            <div>
+                <h2 class="text-3xl font-bold mb-2">Student Hub</h2>
+                <p class="text-gray-400 text-sm">Connect. Collaborate. Grow.</p>
+            </div>
+            <p class="text-xs text-gray-500">© 2026 CIMDR Sangli</p>
+        </div>
+
+        <div class="w-full md:w-1/2 p-12 flex flex-col justify-center">
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h3>
+            <p class="text-gray-500 text-sm mb-8">Login to access your dashboard.</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email</label>
+                    <input type="email" id="loginEmail" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Password</label>
+                    <input type="password" id="loginPass" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue" required>
+                </div>
+                <button type="submit" class="w-full bg-brand-dark text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500">New here? <a href="signup.html" class="text-brand-orange font-bold hover:underline">Create Account</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+            const btn = event.target.querySelector('button');
+            
+            const originalText = btn.innerText;
+            btn.innerText = "Checking...";
+            btn.disabled = true;
+
+            try {
+                // 🔴 FIXED: 127.0.0.1 fixes the lag
+                const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const currentState = JSON.parse(localStorage.getItem('studentHub_Session_v1')) || {};
+                    currentState.user = data.user; 
+                    localStorage.setItem('studentHub_Session_v1', JSON.stringify(currentState));
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.message || "Login failed");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server error. Make sure Node.js is running!");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

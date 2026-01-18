@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub | Dashboard</title>
+
+    <script>
+        /**
+         * 🔒 AUTH GUARD
+         */
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) {
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { orange: '#FF5A36', blue: '#2563EB', lime: '#D2F82E', black: '#111827', bg: '#F8F9FB' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { visibility: hidden; opacity: 0; transition: opacity 0.2s; }
+    </style>
+</head>
+
+<body class="bg-brand-bg text-gray-800 font-sans antialiased h-screen flex overflow-hidden">
+    <script>document.body.style.visibility = 'visible'; document.body.style.opacity = '1';</script>
+
+    <aside class="group w-20 hover:w-64 bg-white border-r border-gray-100 flex flex-col py-8 z-50 transition-all duration-500 absolute md:relative h-full shadow-2xl md:shadow-none overflow-hidden">
+        <div class="mb-8 px-6 flex items-center cursor-pointer text-gray-400 hover:text-gray-600 transition-colors whitespace-nowrap">
+            <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-border-all text-xl"></i></div>
+            <span class="ml-4 font-semibold text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Dashboard</span>
+        </div>
+
+        <div class="px-4 mb-6">
+            <div class="h-12 flex items-center bg-brand-orange text-white rounded-xl shadow-lg cursor-pointer overflow-hidden whitespace-nowrap">
+                <div class="w-12 h-12 flex items-center justify-center shrink-0"><i class="fa-solid fa-folder-open text-lg"></i></div>
+                <span class="ml-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">My Courses</span>
+            </div>
+        </div>
+
+        <nav class="flex flex-col gap-4 px-4">
+            <a href="event.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-regular fa-calendar text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Events</span>
+            </a>
+            <a href="chat.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-regular fa-comment-dots text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Messages</span>
+            </a>
+            <a href="marketplace.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-book-open text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Marketplace</span>
+            </a>
+            <a href="about.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-circle-info text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">About Us</span>
+            </a>
+            <a href="contact.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-address-book text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Contact Us</span>
+            </a>
+            <a href="profile.html" class="flex items-center h-10 px-2 rounded-xl text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-colors whitespace-nowrap">
+                <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-gear text-xl"></i></div>
+                <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Profile</span>
+            </a>
+        </nav>
+
+        <div id="logoutBtn" class="mt-auto px-6 mb-4 flex items-center cursor-pointer text-gray-400 hover:text-red-500 transition-colors whitespace-nowrap">
+            <div class="w-8 flex justify-center shrink-0"><i class="fa-solid fa-arrow-right-from-bracket text-xl transform rotate-180"></i></div>
+            <span class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Logout</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative h-screen overflow-hidden">
+        <header class="flex justify-between items-center px-8 py-6 bg-brand-bg">
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Student<span class="text-brand-orange">Hub</span></h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center bg-white rounded-full px-4 py-2 shadow-sm border border-gray-100 w-80">
+                    <input type="text" id="searchInput" placeholder="Search" class="bg-transparent border-none outline-none text-sm text-gray-600 w-full placeholder-gray-400">
+                    <button class="w-8 h-8 bg-brand-orange rounded-full flex items-center justify-center text-white text-xs shadow-md"><i class="fa-solid fa-search"></i></button>
+                </div>
+                <button class="relative text-gray-400 hover:text-gray-600">
+                    <i class="fa-regular fa-bell text-xl"></i>
+                    <span class="notification-dot hidden absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+                <a href="profile.html" class="flex items-center gap-3 pl-4 border-l border-gray-200">
+                    <img src="https://ui-avatars.com/api/?name=User&background=111827&color=fff" alt="User" class="w-10 h-10 rounded-xl object-cover">
+                    <div class="hidden lg:block text-sm">
+                        <p id="dashWelcome" class="font-bold text-gray-900 leading-none user-name-display">Guest</p>
+                        <p class="text-gray-400 text-xs">@student</p>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-8 pb-8 no-scrollbar">
+            <div class="flex justify-between items-end mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">My Dashboard</h2>
+                <div class="hidden md:flex gap-2">
+                    <button class="px-4 py-1.5 bg-brand-blue text-white rounded-full text-sm font-medium shadow-lg">All</button>
+                    <button onclick="window.location.href='marketplace.html'" class="px-4 py-1.5 bg-white text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-full text-sm font-medium">Marketplace</button>
+                    <button onclick="window.location.href='internship.html'" class="px-4 py-1.5 bg-white text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-full text-sm font-medium">Internships & Jobs</button>
+                    <button onclick="window.location.href='event.html'" class="px-4 py-1.5 bg-white text-gray-500 hover:bg-gray-50 border border-gray-200 rounded-full text-sm font-medium">Events</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div onclick="window.location.href='marketplace.html'" class="bg-brand-blue text-white rounded-3xl p-6 relative overflow-hidden shadow-xl group cursor-pointer hover:-translate-y-1 transition">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium">Marketplace</span>
+                        <i class="fa-regular fa-bookmark text-white/70"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 leading-tight">Buy & Sell<br>Study Materials</h3>
+                    <div class="mt-8 flex justify-between items-end">
+                        <div><span class="text-3xl font-bold" id="marketCount">12+</span><span class="text-[10px] text-blue-200 uppercase font-bold block">New Items</span></div>
+                        <button class="bg-brand-lime text-gray-900 px-5 py-2 rounded-xl text-sm font-bold shadow-lg">Explore</button>
+                    </div>
+                </div>
+
+                <div onclick="window.location.href='internship.html'" class="bg-brand-orange text-white rounded-3xl p-6 relative overflow-hidden shadow-xl group cursor-pointer hover:-translate-y-1 transition">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium">Internships & Jobs</span>
+                        <i class="fa-regular fa-bookmark text-white/70"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 leading-tight">Local Jobs &<br>Opportunities</h3>
+                    <div class="mt-8 flex justify-between items-end">
+                        <div><span class="text-3xl font-bold" id="jobCount">8</span><span class="text-[10px] text-orange-200 uppercase font-bold block">Open Roles</span></div>
+                        <button class="bg-brand-lime text-gray-900 px-5 py-2 rounded-xl text-sm font-bold shadow-lg">Apply</button>
+                    </div>
+                </div>
+
+                <div onclick="window.location.href='chat.html'" class="bg-gray-900 text-white rounded-3xl p-6 relative overflow-hidden shadow-xl group cursor-pointer hover:-translate-y-1 transition">
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium">Community</span>
+                        <i class="fa-regular fa-bookmark text-white/70"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 leading-tight">Ask Seniors<br>& Get Help</h3>
+                    <div class="mt-8 flex justify-between items-end">
+                        <div><span class="text-3xl font-bold" id="chatCount">Live</span><span class="text-[10px] text-gray-400 uppercase font-bold block">Discussion</span></div>
+                        <button class="bg-brand-lime text-gray-900 px-5 py-2 rounded-xl text-sm font-bold shadow-lg">Chat</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
+                    <div class="flex flex-col gap-4">
+                        <div onclick="window.location.href='recycling.html'" class="flex items-center justify-between p-4 bg-white rounded-2xl hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-100 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl"><i class="fa-solid fa-recycle"></i></div>
+                                <div><h4 class="font-bold text-gray-800 text-sm">Recycling Hub</h4><p class="text-xs text-gray-400">Donate E-Waste</p></div>
+                            </div>
+                        </div>
+                        <div onclick="window.location.href='subscription-splitter.html'" class="flex items-center justify-between p-4 bg-white rounded-2xl hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-100 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl"><i class="fa-solid fa-credit-card"></i></div>
+                                <div><h4 class="font-bold text-gray-800 text-sm">Subscription Splitter</h4><p class="text-xs text-gray-400">Share ChatGPT & more</p></div>
+                            </div>
+                        </div>
+                        <div onclick="window.location.href='event.html'" class="flex items-center justify-between p-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 group cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-xl group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm">Upcoming Hackathon</h4>
+                                    <p class="text-xs text-gray-400">Registration closes in 2 days</p>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-1">
+                    <div class="bg-brand-lime text-gray-900 rounded-3xl p-6 h-full flex flex-col justify-between shadow-lg relative overflow-hidden group">
+                        <div>
+                            <span class="bg-black text-white px-3 py-1 rounded-full text-xs font-bold">Projects</span>
+                            <h3 class="text-3xl font-bold mt-4 leading-tight">Project<br>Collaboration</h3>
+                            <p class="text-sm font-medium mt-2 opacity-80">Find teammates matching your skills.</p>
+                        </div>
+                        <div class="mt-8">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div><span class="text-4xl font-bold">24</span><p class="text-xs font-bold opacity-70">Active Teams</p></div>
+                                <div class="flex gap-2 text-2xl"><i class="fa-solid fa-code"></i><i class="fa-solid fa-rocket"></i></div>
+                            </div>
+                            <button onclick="window.location.href='project-collaboration.html'" class="w-full bg-brand-orange text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition-colors">Find a Team</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/store.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

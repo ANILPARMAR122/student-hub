@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub | Opportunities</title>
+
+    <script>
+        (function () {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) window.location.href = 'login.html';
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { orange: '#FF5A36', blue: '#2563EB', lime: '#D2F82E', bg: '#F8F9FB', black: '#111827' } }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-brand-bg text-gray-800 font-sans antialiased h-screen flex overflow-hidden">
+
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 shadow-sm shrink-0 items-center">
+        <div onclick="window.location.href='index.html'"
+            class="mb-8 flex justify-center cursor-pointer text-gray-400 hover:text-brand-orange transition"><i
+                class="fa-solid fa-arrow-left text-2xl"></i></div>
+
+        <div class="flex flex-col gap-6 w-full px-4">
+            <div onclick="window.location.href='internship.html'"
+                class="h-12 flex items-center justify-center bg-brand-orange text-white rounded-xl shadow-lg cursor-pointer transition transform hover:scale-105"
+                title="Jobs">
+                <i class="fa-solid fa-briefcase text-lg"></i>
+            </div>
+            <div onclick="window.location.href='applications.html'"
+                class="h-12 flex items-center justify-center bg-white text-gray-400 hover:text-brand-blue hover:bg-blue-50 border border-transparent hover:border-blue-100 rounded-xl cursor-pointer transition"
+                title="My Applications">
+                <i class="fa-solid fa-file-signature text-lg"></i>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative h-screen overflow-hidden">
+
+        <header class="flex flex-col md:flex-row justify-between items-center px-8 py-6 bg-brand-bg gap-4 shrink-0">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold text-gray-800">Local <span class="text-brand-blue">Opportunities</span>
+                </h1>
+                <span
+                    class="bg-green-100 text-green-700 border border-green-200 px-3 py-1 rounded-full text-xs font-bold">Verified</span>
+            </div>
+            <button onclick="openPostModal()"
+                class="bg-brand-black text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:bg-gray-800 transition flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> Post Opportunity
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-8 pb-8">
+            <div
+                class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4 mb-8 sticky top-0 z-40">
+                <div
+                    class="flex-1 flex items-center bg-gray-50 rounded-xl px-4 border border-transparent focus-within:border-brand-blue transition">
+                    <i class="fa-solid fa-search text-gray-400 mr-3"></i>
+                    <input type="text" id="searchInput" placeholder="Search roles, skills, or companies..."
+                        class="w-full bg-transparent py-3 outline-none text-sm font-medium">
+                </div>
+                <div class="flex gap-4">
+                    <select id="typeFilter"
+                        class="bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-gray-600 outline-none focus:border-brand-blue cursor-pointer">
+                        <option value="All">All Types</option>
+                        <option value="Internship">Internships</option>
+                        <option value="Part-Time">Part-Time Jobs</option>
+                    </select>
+                    <select id="locFilter"
+                        class="bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-gray-600 outline-none focus:border-brand-blue cursor-pointer">
+                        <option value="All">All Locations</option>
+                        <option value="Sangli">Sangli Only</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="internshipGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12">
+                <div class="col-span-full text-center py-10 text-gray-400">Loading opportunities...</div>
+            </div>
+        </div>
+    </main>
+
+    <div id="jobModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95"
+            id="modalContent"></div>
+    </div>
+
+    <div id="applicationFormModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-md z-[110] hidden items-center justify-center p-4">
+        <div
+            class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100 relative">
+            <div class="bg-brand-blue p-6 text-white text-center">
+                <h3 class="text-xl font-bold">Apply Now</h3>
+                <p class="text-blue-100 text-xs" id="applyJobTitle">Position Title</p>
+            </div>
+
+            <form onsubmit="submitApplication(event)" class="p-8 space-y-4">
+                <input type="hidden" id="applyJobId">
+                <input type="hidden" id="applyCompanyName">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
+                    <input type="text" id="appName" required
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email Address</label>
+                    <input type="email" id="appEmail" required
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue transition">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Age</label>
+                        <input type="number" id="appAge" required
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Phone</label>
+                        <input type="tel" id="appPhone" required
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue transition">
+                    </div>
+                </div>
+
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeAppForm()"
+                        class="flex-1 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 bg-brand-black text-white py-3 rounded-xl font-bold shadow-lg hover:bg-brand-blue transition">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="postJobModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] hidden items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden relative">
+        <div class="bg-brand-orange p-6 text-white flex justify-between items-center">
+            <h3 class="text-xl font-bold">Post New Opportunity</h3>
+            <button onclick="closePostModal()" class="hover:text-black transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        
+        <form onsubmit="handlePostJob(event)" class="p-8 space-y-4 max-h-[80vh] overflow-y-auto">
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Job Title</label>
+                <input type="text" name="title" required placeholder="e.g. React Developer" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Company</label>
+                    <input type="text" name="company" required placeholder="e.g. TechCorp" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Type</label>
+                    <select name="type" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                        <option value="Internship">Internship</option>
+                        <option value="Part-Time">Part-Time</option>
+                        <option value="Full-Time">Full-Time</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Location</label>
+                    <input type="text" name="location" required placeholder="e.g. Sangli / Remote" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Stipend/Pay</label>
+                    <input type="text" name="stipend" placeholder="e.g. ₹5,000/month" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Skills (Comma separated)</label>
+                <input type="text" name="skills" placeholder="Java, SQL, Python" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                <textarea name="description" rows="3" placeholder="Job details..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-brand-black text-white py-3 rounded-xl font-bold shadow-lg hover:bg-brand-orange transition">
+                🚀 Publish Job
+            </button>
+        </form>
+    </div>
+</div>
+    <script src="../js/store.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

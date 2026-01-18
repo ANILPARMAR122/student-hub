@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Teams | Student Hub</title>
+    <script>
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) window.location.href = 'login.html';
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { purple: '#7C3AED', bg: '#F8F9FB', black: '#111827' } } } } }
+    </script>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans h-screen flex overflow-hidden">
+    
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 shadow-sm shrink-0 items-center">
+        <div onclick="window.location.href='index.html'" class="mb-8 cursor-pointer text-gray-400 hover:text-brand-purple transition"><i class="fa-solid fa-arrow-left text-2xl"></i></div>
+        <div class="flex flex-col gap-6 w-full px-4">
+            <div onclick="window.location.href='internship.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-briefcase text-lg"></i></div>
+            <div onclick="window.location.href='marketplace.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-store text-lg"></i></div>
+            <div onclick="window.location.href='project-collaboration.html'" class="h-12 flex items-center justify-center text-gray-400 hover:bg-gray-50 rounded-xl cursor-pointer transition"><i class="fa-solid fa-laptop-code text-lg"></i></div>
+            <div onclick="window.location.href='my-teams.html'" class="h-12 flex items-center justify-center bg-brand-purple text-white shadow-lg rounded-xl cursor-pointer transition transform hover:scale-105"><i class="fa-solid fa-users-gear text-lg"></i></div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="px-10 py-8 bg-brand-bg shrink-0">
+            <h1 class="text-3xl font-bold text-gray-900">My <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">Projects & Teams</span></h1>
+            <p class="text-sm text-gray-500 mt-1">Manage the projects you lead and track your applications.</p>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-10 pb-10">
+            <div id="myTeamsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <p class="text-gray-400 animate-pulse">Loading your dashboard...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="editModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100">
+            <div class="bg-gray-900 p-6 text-white flex justify-between items-center">
+                <h3 class="text-lg font-bold"><i class="fa-solid fa-pen-to-square mr-2"></i> Edit Project</h3>
+                <button onclick="closeEditModal()" class="hover:text-gray-400 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <form onsubmit="handleUpdateProject(event)" class="p-8 space-y-5">
+                <input type="hidden" id="editProjectId" name="projectId">
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Project Title</label>
+                    <input type="text" id="editTitle" name="title" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-brand-purple focus:ring-2 focus:ring-purple-100 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tech Stack</label>
+                    <input type="text" id="editStack" name="tech_stack" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-brand-purple transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Recruitment Status</label>
+                    <select id="editStatus" name="status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-brand-purple transition cursor-pointer">
+                        <option value="Open">🟢 Open (Hiring)</option>
+                        <option value="Closed">🔴 Closed (Full)</option>
+                        <option value="Completed">🏁 Completed</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                    <textarea id="editDesc" name="description" rows="3" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium outline-none focus:border-brand-purple transition"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-brand-purple text-white py-3.5 rounded-xl font-bold shadow-lg hover:bg-purple-700 hover:shadow-purple-200 transition transform active:scale-95">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/store.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Student Hub</title>
+    
+    <script>
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Secure_v1') || 'null');
+            if (!state || !state.user) {
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { orange: '#FF5A36', blue: '#2563EB', lime: '#D2F82E', black: '#111827', bg: '#F8F9FB' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { visibility: hidden; opacity: 0; transition: opacity 0.2s; }
+        .map-container iframe { width: 100%; height: 100%; border-radius: 1rem; border: none; }
+    </style>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans h-screen flex overflow-hidden">
+    <script>document.body.style.visibility = 'visible'; document.body.style.opacity = '1';</script>
+
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 items-center shadow-lg">
+        <a href="index.html" class="mb-8 text-gray-400 hover:text-brand-orange transition"><i class="fa-solid fa-arrow-left text-2xl"></i></a>
+        <div class="flex-1 flex flex-col gap-6">
+            <a href="index.html" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-50"><i class="fa-solid fa-border-all text-xl"></i></a>
+            <a href="about.html" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-50"><i class="fa-solid fa-circle-info text-xl"></i></a>
+            <a href="contact.html" class="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-blue text-white shadow-lg"><i class="fa-solid fa-address-book text-xl"></i></a>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+        
+        <div class="max-w-6xl mx-auto px-6 py-10">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Get in Touch</h1>
+            <p class="text-gray-500 mb-10">Have questions or suggestions? We'd love to hear from you.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4">
+                        <div class="w-12 h-12 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-location-dot text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Visit Us</h4>
+                            <p class="text-sm text-gray-500 mt-1">CIMDR College Campus,<br>Sangli, Maharashtra 416416</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4">
+                        <div class="w-12 h-12 bg-orange-50 text-brand-orange rounded-full flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-envelope text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Email Us</h4>
+                            <p class="text-sm text-gray-500 mt-1">support@studenthub.edu<br>admin@studenthub.edu</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4">
+                        <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-phone text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Call Us</h4>
+                            <p class="text-sm text-gray-500 mt-1">+91 123 456 7890<br>Mon-Fri (9am - 5pm)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 bg-white rounded-3xl p-8 border border-gray-100 shadow-lg">
+                    <form onsubmit="event.preventDefault(); alert('Message sent! We will reply shortly.');" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500 mb-2">Your Name</label>
+                                <input type="text" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-blue transition" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-500 mb-2">Email Address</label>
+                                <input type="email" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-blue transition" placeholder="john@college.edu">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">Subject</label>
+                            <select class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-blue transition">
+                                <option>General Inquiry</option>
+                                <option>Report a Bug</option>
+                                <option>Business / Sponsorship</option>
+                                <option>Feedback</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-2">Message</label>
+                            <textarea rows="4" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-blue transition" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button class="bg-brand-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800 transition w-full md:w-auto">
+                            Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-200 rounded-3xl h-80 map-container shadow-inner">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3818.995574044222!2d74.567!3d16.850!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc1225333333333%3A0x123456789abcdef!2sSangli%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin" loading="lazy"></iframe>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h3>
+                    
+                    <details class="group bg-white p-4 rounded-xl border border-gray-100 cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-gray-800">
+                            Is Student Hub free to use?
+                            <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
+                        </summary>
+                        <p class="text-sm text-gray-600 mt-2">Yes! It is completely free for all students of our college.</p>
+                    </details>
+
+                    <details class="group bg-white p-4 rounded-xl border border-gray-100 cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-gray-800">
+                            How do I verify my account?
+                            <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
+                        </summary>
+                        <p class="text-sm text-gray-600 mt-2">Use your official college email ID during signup for instant verification.</p>
+                    </details>
+
+                    <details class="group bg-white p-4 rounded-xl border border-gray-100 cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-gray-800">
+                            Can I post multiple items?
+                            <i class="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
+                        </summary>
+                        <p class="text-sm text-gray-600 mt-2">Absolutely. There is no limit to the number of items you can list in the marketplace.</p>
+                    </details>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

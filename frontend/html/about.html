@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Student Hub</title>
+    
+    <script>
+        // Auth Guard
+        (function() {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) {
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { orange: '#FF5A36', blue: '#2563EB', lime: '#D2F82E', black: '#111827', bg: '#F8F9FB' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>body { visibility: hidden; opacity: 0; transition: opacity 0.2s; }</style>
+</head>
+<body class="bg-brand-bg text-gray-800 font-sans h-screen flex overflow-hidden">
+    <script>document.body.style.visibility = 'visible'; document.body.style.opacity = '1';</script>
+
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 items-center shadow-lg">
+        <div onclick="window.location.href='index.html'" class="mb-8 cursor-pointer text-gray-400 hover:text-brand-orange transition"><i class="fa-solid fa-arrow-left text-2xl"></i></div>
+        <div class="flex-1 flex flex-col gap-6">
+            <div onclick="window.location.href='index.html'" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-50 cursor-pointer"><i class="fa-solid fa-border-all text-xl"></i></div>
+            <div onclick="window.location.href='about.html'" class="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-black text-white shadow-lg cursor-pointer"><i class="fa-solid fa-circle-info text-xl"></i></div>
+            <div onclick="window.location.href='contact.html'" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-50 cursor-pointer"><i class="fa-solid fa-address-book text-xl"></i></div>
+        </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto relative">
+        <header class="h-64 bg-brand-black text-white relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"></div>
+            <div class="relative z-10 text-center px-4">
+                <span class="text-brand-lime font-bold uppercase tracking-widest text-xs mb-2 block">Our Mission</span>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Empowering Campus Connections</h1>
+                <p class="text-gray-300 max-w-2xl mx-auto text-sm md:text-base">Student Hub isn't just an app; it's a movement to make student life easier, smarter, and more sustainable.</p>
+            </div>
+        </header>
+
+        <div class="max-w-6xl mx-auto px-6 py-12 space-y-16">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Why We Built This?</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        We noticed a gap. Juniors struggled to find guidance, seniors had old books gathering dust, and talented students missed local job opportunities. 
+                        <br><br>
+                        Student Hub bridges these gaps by creating a unified ecosystem for <strong>College, Career, and Community</strong>.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
+                            <i class="fa-solid fa-users text-brand-blue text-2xl mb-2"></i>
+                            <h4 class="font-bold text-xl">1200+</h4>
+                            <p class="text-xs text-gray-500">Active Students</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex-1 text-center">
+                            <i class="fa-solid fa-leaf text-green-500 text-2xl mb-2"></i>
+                            <h4 class="font-bold text-xl">450kg</h4>
+                            <p class="text-xs text-gray-500">E-Waste Saved</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop" class="w-full h-80 object-cover transition transform group-hover:scale-105 duration-700">
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <button class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-brand-orange hover:scale-110 transition border-2 border-white/50">
+                            <i class="fa-solid fa-play text-xl ml-1"></i>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <p class="font-bold text-lg">Watch Our Story</p>
+                        <p class="text-xs opacity-80">2 min video</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-900">Meet the Creators</h2>
+                    <p class="text-gray-500 mt-2">The dynamic duo behind Student Hub.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300 text-center group">
+                        <div class="w-32 h-32 mx-auto bg-blue-100 rounded-full overflow-hidden mb-6 border-4 border-brand-bg relative group-hover:scale-105 transition">
+                            <img src="https://ui-avatars.com/api/?name=Niranjan+Pawar&background=2563EB&color=fff&size=128" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-2xl text-gray-900">Niranjan Pawar</h3>
+                        <span class="inline-block bg-blue-50 text-brand-blue px-3 py-1 rounded-full text-xs font-bold uppercase mt-2 mb-4 tracking-wide">Frontend Developer</span>
+                        <p class="text-sm text-gray-500 italic mb-6">"Crafting pixel-perfect user experiences with modern UI technologies."</p>
+                        <div class="flex justify-center gap-4 text-gray-400">
+                            <a href="#" class="hover:text-brand-blue transition transform hover:scale-110"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                            <a href="#" class="hover:text-black transition transform hover:scale-110"><i class="fa-brands fa-github text-xl"></i></a>
+                            <a href="#" class="hover:text-pink-600 transition transform hover:scale-110"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300 text-center group">
+                        <div class="w-32 h-32 mx-auto bg-green-100 rounded-full overflow-hidden mb-6 border-4 border-brand-bg relative group-hover:scale-105 transition">
+                            <img src="https://ui-avatars.com/api/?name=Anil+Parmar&background=16A34A&color=fff&size=128" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-2xl text-gray-900">Anil Parmar</h3>
+                        <span class="inline-block bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold uppercase mt-2 mb-4 tracking-wide">Backend & DB Lead</span>
+                        <p class="text-sm text-gray-500 italic mb-6">"Architecting secure and scalable server-side solutions."</p>
+                        <div class="flex justify-center gap-4 text-gray-400">
+                            <a href="#" class="hover:text-brand-blue transition transform hover:scale-110"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                            <a href="#" class="hover:text-black transition transform hover:scale-110"><i class="fa-brands fa-github text-xl"></i></a>
+                            <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fa-brands fa-twitter text-xl"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bg-brand-blue rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-2xl">
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-4">Have an Idea?</h2>
+                    <p class="mb-8 opacity-90 max-w-xl mx-auto">We are always looking for feedback to improve Student Hub. Reach out to us directly!</p>
+                    <button onclick="window.location.href='contact.html'" class="inline-block bg-white text-brand-blue px-8 py-3 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg transform hover:scale-105">Contact Us</button>
+                </div>
+                <div class="absolute top-0 left-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-64 h-64 bg-brand-lime opacity-20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

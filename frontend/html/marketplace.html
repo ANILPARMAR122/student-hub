@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marketplace | Buy & Sell</title>
+
+    <script>
+        (function () {
+            const state = JSON.parse(localStorage.getItem('studentHub_Session_v1') || 'null');
+            if (!state || !state.user) window.location.href = 'login.html';
+        })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { brand: { orange: '#FF5A36', blue: '#2563EB', bg: '#F8F9FB', black: '#111827' } }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-brand-bg text-gray-800 font-sans antialiased h-screen flex overflow-hidden">
+
+    <aside class="w-20 bg-white border-r border-gray-100 flex flex-col py-8 z-50 shadow-sm shrink-0 items-center">
+        <div onclick="window.location.href='index.html'"
+            class="mb-8 flex justify-center cursor-pointer text-gray-400 hover:text-brand-orange transition"><i
+                class="fa-solid fa-arrow-left text-2xl"></i></div>
+
+        <div class="flex flex-col gap-6 w-full px-4">
+            <div onclick="window.location.href='internship.html'"
+                class="h-12 flex items-center justify-center bg-white text-gray-400 hover:text-brand-orange hover:bg-orange-50 border border-transparent rounded-xl cursor-pointer transition"
+                title="Jobs">
+                <i class="fa-solid fa-briefcase text-lg"></i>
+            </div>
+            <div onclick="window.location.href='applications.html'"
+                class="h-12 flex items-center justify-center bg-white text-gray-400 hover:text-brand-orange hover:bg-orange-50 border border-transparent rounded-xl cursor-pointer transition"
+                title="My Applications">
+                <i class="fa-solid fa-file-signature text-lg"></i>
+            </div>
+            <div onclick="window.location.href='marketplace.html'"
+                class="h-12 flex items-center justify-center bg-brand-orange text-white shadow-lg rounded-xl cursor-pointer transition transform hover:scale-105"
+                title="Marketplace">
+                <i class="fa-solid fa-store text-lg"></i>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative h-screen overflow-hidden">
+
+        <header class="flex flex-col md:flex-row justify-between items-center px-8 py-6 bg-brand-bg gap-4 shrink-0">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Student <span class="text-brand-orange">Marketplace</span>
+                </h1>
+                <p class="text-sm text-gray-500">Buy and sell books, gadgets, and tools.</p>
+            </div>
+            <button onclick="openSellModal()"
+                class="bg-brand-black text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:bg-gray-800 transition flex items-center gap-2">
+                <i class="fa-solid fa-camera"></i> Sell Item
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto px-8 pb-8">
+
+            <div class="flex gap-4 mb-8 sticky top-0 bg-brand-bg z-40 py-2">
+                <div class="flex-1 bg-white rounded-xl px-4 border border-gray-200 flex items-center shadow-sm">
+                    <i class="fa-solid fa-search text-gray-400 mr-3"></i>
+                    <input type="text" id="marketSearch" placeholder="Search for books, calc, etc..."
+                        class="w-full py-3 outline-none text-sm">
+                </div>
+                <select id="marketCatFilter"
+                    class="bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold text-gray-600 outline-none cursor-pointer">
+                    <option value="All">All Categories</option>
+                    <option value="Books">📚 Books & Notes</option>
+                    <option value="Electronics">💻 Electronics</option>
+                    <option value="Stationary">✏️ Stationary</option>
+                    <option value="Other">📦 Other</option>
+                </select>
+            </div>
+
+            <div id="marketplaceGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-12">
+                <div class="col-span-full text-center py-10 text-gray-400">Loading marketplace...</div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="sellModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden relative">
+            <div class="bg-brand-orange p-5 text-white flex justify-between items-center">
+                <h3 class="text-lg font-bold"><i class="fa-solid fa-tag mr-2"></i> Sell an Item</h3>
+                <button onclick="closeSellModal()" class="hover:text-black transition"><i
+                        class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <form onsubmit="handleSellItem(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Item Name</label>
+                    <input type="text" name="title" required placeholder="e.g. Engineering Mathematics Book"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Price (₹)</label>
+                        <input type="number" name="price" required placeholder="500"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Category</label>
+                        <select name="category"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                            <option value="Books">Books</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Stationary">Stationary</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Upload Photo</label>
+                    <input type="file" name="image" accept="image/*"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-orange file:text-white hover:file:bg-orange-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Phone</label>
+                    <input type="tel" name="phone" required placeholder="e.g. 9876543210"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Description</label>
+                    <textarea name="description" rows="2" placeholder="Condition, edition, etc."
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-orange"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-brand-black text-white py-3 rounded-xl font-bold shadow-lg hover:bg-brand-orange transition">
+                    List Item for Sale
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/store.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
