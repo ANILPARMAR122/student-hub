@@ -1,19 +1,25 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-// 🟢 Helper to clean hidden spaces
-const clean = (str) => str ? str.trim() : '';
+// 🟢 NEW APPROACH: Reconstruct the URL manually to strip invisible characters
+// We take the parts, clean them, and build a single strong connection string.
+const host = (process.env.DB_HOST || '').trim();
+const user = (process.env.DB_USER || '').trim();
+const pass = (process.env.DB_PASSWORD || '').trim();
+const port = (process.env.DB_PORT || '28878').trim();
+const name = (process.env.DB_NAME || 'defaultdb').trim();
+
+console.log(`🔌 Connecting to Host: ${host} on Port: ${port}`);
 
 const pool = mysql.createPool({
-    host: clean(process.env.DB_HOST),
-    user: clean(process.env.DB_USER),
-    password: clean(process.env.DB_PASSWORD),
-    database: clean(process.env.DB_NAME),
-    port: clean(process.env.DB_PORT) || 3306,
+    host: host,
+    user: user,
+    password: pass,
+    database: name,
+    port: port,
+    ssl: { rejectUnauthorized: false },
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    ssl: { rejectUnauthorized: false }
+    connectionLimit: 5
 });
 
 module.exports = pool.promise();
